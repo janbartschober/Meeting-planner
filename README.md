@@ -10,8 +10,7 @@ Een eenvoudige datumprikker die je kunt delen via een link in Signal. Mensen kun
 
 ## Live versie
 
-[Klik hier om de datumprikker te gebruiken](https:// [jouw-github-username].github.io/datumprikker)
-
+[Klik hier om de datumprikker te gebruiken](https://github.com/janbartschober/Meeting-planner.git)
 ## Aanpassen
 
 Je kunt eenvoudig de datums en titel aanpassen door het `index.html` bestand te bewerken.
