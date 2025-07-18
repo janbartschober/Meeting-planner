@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datumprikker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .event-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .event-title h2 {
+            color: #2d3748;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .event-title p {
+            color: #718096;
+            font-size: 1.1rem;
+        }
+
+        .date-option {
+            margin-bottom: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .date-option:hover {
+            border-color: #4facfe;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(79, 172, 254, 0.2);
+        }
+
+        .date-option.selected {
+            border-color: #4facfe;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .date-header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .date-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .date-day {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .date-full {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .vote-count {
+            font-size: 1.2rem;
+            font-weight: 600;
+            min-width: 60px;
+            text-align: center;
+            padding: 10px 15px;
+            background: rgba(79, 172, 254, 0.1);
+            border-radius: 10px;
+            color: #4facfe;
+        }
+
+        .date-option.selected .vote-count {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .voters-list {
+            padding: 0 20px 20px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            margin-top: 10px;
+            display: none;
+        }
+
+        .date-option.selected .voters-list {
+            display: block;
+        }
+
+        .voter-name {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 12px;
+            border-radius: 15px;
+            margin: 5px 5px 0 0;
+            font-size: 0.9rem;
+        }
+
+        .name-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            transition: border-color 0.3s ease;
+        }
+
+        .name-input:focus {
+            outline: none;
+            border-color: #4facfe;
+        }
+
+        .instructions {
+            text-align: center;
+            color: #718096;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #f7fafc;
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .date-header {
+                padding: 15px;
+            }
+            
+            .date-day {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📅 Datumprikker</h1>
+            <p>Kies je beschikbare datums</p>
+        </div>
+        
+        <div class="content">
+            <div class="event-title">
+                <h2>Wanneer kunnen we afspreken?</h2>
+                <p>Klik op de datums waarop je beschikbaar bent</p>
+            </div>
+            
+            <input type="text" class="name-input" id="nameInput" placeholder="Vul je naam in..." maxlength="30">
+            
+            <div class="instructions">
+                Vul je naam in en klik op je beschikbare datums
+            </div>
+            
+            <div id="dateOptions">
+                <!-- Datum opties worden hier gegenereerd -->
+            </div>
+        </div>
+        
+        <div class="footer">
+            Gemaakt voor Signal groep • Deel deze link met anderen
+        </div>
+    </div>
+
+    <script>
+        // Configuratie - pas deze aan naar jouw wensen
+        const eventTitle = "Wanneer kunnen we afspreken?";
+        const dateOptions = [
+            { date: "2024-07-20", label: "Zaterdag 20 juli" },
+            { date: "2024-07-21", label: "Zondag 21 juli" },
+            { date: "2024-07-27", label: "Zaterdag 27 juli" },
+            { date: "2024-07-28", label: "Zondag 28 juli" },
+            { date: "2024-08-03", label: "Zaterdag 3 augustus" },
+            { date: "2024-08-04", label: "Zondag 4 augustus" }
+        ];
+
+        // Data opslag (normaal zou je een database gebruiken)
+        let votes = {};
+        let currentUser = '';
+
+        // Initialiseer votes voor elke datum
+        dateOptions.forEach(option => {
+            votes[option.date] = [];
+        });
+
+        // Genereer datum opties
+        function generateDateOptions() {
+            const container = document.getElementById('dateOptions');
+            container.innerHTML = '';
+            
+            dateOptions.forEach(option => {
+                const dateDiv = document.createElement('div');
+                dateDiv.className = 'date-option';
+                dateDiv.dataset.date = option.date;
+                
+                const votersList = votes[option.date].map(voter => 
+                    `<span class="voter-name">${voter}</span>`
+                ).join('');
+                
+                dateDiv.innerHTML = `
+                    <div class="date-header">
+                        <div class="date-info">
+                            <div class="date-day">${option.label.split(' ')[0]}</div>
+                            <div class="date-full">${option.label}</div>
+                        </div>
+                        <div class="vote-count">${votes[option.date].length}</div>
+                    </div>
+                    <div class="voters-list">
+                        ${votersList}
+                    </div>
+                `;
+                
+                // Check if current user has voted for this date
+                if (currentUser && votes[option.date].includes(currentUser)) {
+                    dateDiv.classList.add('selected');
+                }
+                
+                dateDiv.addEventListener('click', () => toggleVote(option.date));
+                container.appendChild(dateDiv);
+            });
+        }
+
+        // Toggle vote voor een datum
+        function toggleVote(date) {
+            const nameInput = document.getElementById('nameInput');
+            const name = nameInput.value.trim();
+            
+            if (!name) {
+                nameInput.focus();
+                nameInput.style.borderColor = '#e53e3e';
+                setTimeout(() => {
+                    nameInput.style.borderColor = '#e2e8f0';
+                }, 2000);
+                return;
+            }
+            
+            currentUser = name;
+            
+            // Remove user from all dates first
+            Object.keys(votes).forEach(d => {
+                const index = votes[d].indexOf(name);
+                if (index > -1) {
+                    votes[d].splice(index, 1);
+                }
+            });
+            
+            // Add user to clicked date
+            if (!votes[date].includes(name)) {
+                votes[date].push(name);
+            }
+            
+            // Update display
+            generateDateOptions();
+            
+            // Save to localStorage (voor demo doeleinden)
+            localStorage.setItem('datepicker_votes', JSON.stringify(votes));
+            localStorage.setItem('datepicker_user', name);
+        }
+
+        // Laad opgeslagen data
+        function loadSavedData() {
+            const savedVotes = localStorage.getItem('datepicker_votes');
+            const savedUser = localStorage.getItem('datepicker_user');
+            
+            if (savedVotes) {
+                votes = JSON.parse(savedVotes);
+            }
+            
+            if (savedUser) {
+                currentUser = savedUser;
+                document.getElementById('nameInput').value = savedUser;
+            }
+        }
+
+        // Initialiseer de app
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSavedData();
+            generateDateOptions();
+            
+            // Auto-save naam
+            document.getElementById('nameInput').addEventListener('input', function() {
+                currentUser = this.value.trim();
+                localStorage.setItem('datepicker_user', currentUser);
+            });
+        });
+    </script>
+</body>
+</html>
