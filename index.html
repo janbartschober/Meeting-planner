@@ -312,19 +312,16 @@
             
             currentUser = name;
             
-            // Remove user from all dates first
-            Object.keys(votes).forEach(d => {
-                const index = votes[d].indexOf(name);
-                if (index > -1) {
-                    votes[d].splice(index, 1);
-                }
-            });
-            
-            // Add user to clicked date
-            if (!votes[date].includes(name)) {
-                votes[date].push(name);
-            }
-            
+           // Toggle user for this specific date
+    const index = votes[date].indexOf(name);
+    if (index > -1) {
+        // User already voted for this date, remove vote
+        votes[date].splice(index, 1);
+    } else {
+        // User hasn't voted for this date, add vote
+        votes[date].push(name);
+    }
+    
             // Update display
             generateDateOptions();
             
